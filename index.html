@@ -193,6 +193,10 @@ th.t1{color:var(--red)}th.t3{color:var(--green)}th.t2{color:var(--gold-ui)}
             <option value="E-commerce">E-commerce</option>
             <option value="Agência de Marketing">Agência de Marketing</option>
             <option value="Infoproduto">Infoproduto</option>
+            <option value="Imobiliária">Imobiliária</option>
+            <option value="Expert / Mentoria">Expert / Mentoria</option>
+            <option value="Escritório de Advocacia">Escritório de Advocacia</option>
+            <option value="Restaurante / Delivery">Restaurante / Delivery</option>
           </select></div>
         <div class="fg"><label for="clinica">Nome da Empresa</label><input class="field" id="clinica" type="text" placeholder="Ex.: Studio Aurora" autocomplete="organization"></div>
         <div class="fg"><label for="fat_atual">Faturamento Médio Mensal</label><div class="pre"><span>R$</span><input id="fat_atual" type="number" min="0" step="100" placeholder="0"></div></div>
@@ -393,7 +397,90 @@ var TYPES={
    {label:'Vendas Finalizadas',valueKey:'stage:3',fmt:'count',status:{src:'rate:2',fn:stRate(1,3)}},
    {label:'CAC · Custo por Venda Finalizada',valueKey:'cac',fmt:'money',adsOnly:true,hint:'investimento ÷ vendas',status:{src:'cac',fn:stPctTicket(0.20,0.50)}},
    {label:'ROAS Projetado',valueKey:'roas',fmt:'roas',status:{src:'roas',fn:stRoas(2,5)}},
-   {label:'Vendedores Necessários',valueKey:'capacity',fmt:'int',hint:'1 vendedor · 800 leads/mês'}]}
+   {label:'Vendedores Necessários',valueKey:'capacity',fmt:'int',hint:'1 vendedor · 800 leads/mês'}]},
+ 'Imobiliária':{bench:benchGen(null),
+  entry:{tableLabel:'Leads Captados / mês',tableLabelNoAds:'Volume de Leads / mês'},
+  funnel:['Leads','Agend.','Visitas','Vendas'],capacity:{baseKey:'entry',divisor:300},
+  rates:[
+   {sLabel:'Taxa Agendamento de Visitas',dLabel:'Visitas Agendadas',def:15,ideal:0.30,h:[25,40]},
+   {sLabel:'Taxa Comparecimento de Visitas',dLabel:'Visitas Realizadas',def:60,ideal:0.80,h:[70,85]},
+   {sLabel:'Taxa de Fechamento (Vendas)',dLabel:'Vendas Realizadas',def:3,ideal:0.08,h:[5,10]}],
+  sliders:{inv:{label:'Investido em Anúncios',min:100,max:50000,step:100,def:3000},
+   cpc:{label:'Custo por Lead Captado',min:1,max:300,step:1,def:25},
+   ticket:{label:'Comissão Média por Venda',min:1000,max:200000,step:1000,def:15000},
+   volLeads:{label:'Volume de Leads / mês',min:10,max:5000,step:10,def:200}},
+  cpcStatus:null,
+  dash:[
+   {label:'Qtde Leads Captados',valueKey:'entry',fmt:'count'},
+   {label:'Visitas Agendadas',valueKey:'stage:1',fmt:'count',status:{src:'rate:0',fn:stRate(25,40)}},
+   {label:'Visitas Realizadas',valueKey:'stage:2',fmt:'count',status:{src:'rate:1',fn:stRate(70,85)}},
+   {label:'Vendas Realizadas',valueKey:'stage:3',fmt:'count',status:{src:'rate:2',fn:stRate(5,10)}},
+   {label:'Custo por Visita Realizada',valueKey:'cost:2',fmt:'money',adsOnly:true,hint:'investimento ÷ visitas'},
+   {label:'CAC · Custo por Venda Realizada',valueKey:'cac',fmt:'money',adsOnly:true,hint:'investimento ÷ vendas',status:{src:'cac',fn:stPctTicket(0.10,0.30)}},
+   {label:'ROAS Projetado',valueKey:'roas',fmt:'roas',status:{src:'roas',fn:stRoas(3,8)}},
+   {label:'Corretores Necessários',valueKey:'capacity',fmt:'int',hint:'1 corretor · 300 leads/mês'}]},
+ 'Expert / Mentoria':{bench:benchGen(null),
+  entry:{tableLabel:'Leads Captados / mês',tableLabelNoAds:'Volume de Leads / mês'},
+  funnel:['Leads','Agend.','Calls','Vendas'],capacity:{baseKey:'entry',divisor:250},
+  rates:[
+   {sLabel:'Taxa Agendamento de Calls',dLabel:'Calls Agendadas',def:10,ideal:0.20,h:[15,25]},
+   {sLabel:'Taxa Comparecimento nas Calls',dLabel:'Calls Realizadas',def:60,ideal:0.75,h:[65,80]},
+   {sLabel:'Taxa de Fechamento (Mentoria)',dLabel:'Vendas Realizadas',def:15,ideal:0.30,h:[20,30]}],
+  sliders:{inv:{label:'Investido em Anúncios',min:100,max:50000,step:100,def:3000},
+   cpc:{label:'Custo por Lead Captado',min:1,max:100,step:1,def:12},
+   ticket:{label:'Ticket Médio da Mentoria',min:500,max:50000,step:500,def:5000},
+   volLeads:{label:'Volume de Leads / mês',min:10,max:5000,step:10,def:300}},
+  cpcStatus:null,
+  dash:[
+   {label:'Qtde Leads Captados',valueKey:'entry',fmt:'count'},
+   {label:'Calls Agendadas',valueKey:'stage:1',fmt:'count',status:{src:'rate:0',fn:stRate(15,25)}},
+   {label:'Calls Realizadas',valueKey:'stage:2',fmt:'count',status:{src:'rate:1',fn:stRate(65,80)}},
+   {label:'Vendas Realizadas',valueKey:'stage:3',fmt:'count',status:{src:'rate:2',fn:stRate(20,30)}},
+   {label:'Custo por Call Realizada',valueKey:'cost:2',fmt:'money',adsOnly:true,hint:'investimento ÷ calls'},
+   {label:'CAC · Custo por Venda Realizada',valueKey:'cac',fmt:'money',adsOnly:true,hint:'investimento ÷ vendas',status:{src:'cac',fn:stPctTicket(0.10,0.30)}},
+   {label:'ROAS Projetado',valueKey:'roas',fmt:'roas',status:{src:'roas',fn:stRoas(2,5)}},
+   {label:'Closers Necessários',valueKey:'capacity',fmt:'int',hint:'1 closer · 250 leads/mês'}]},
+ 'Escritório de Advocacia':{bench:benchGen(null),
+  entry:{tableLabel:'Leads Captados / mês',tableLabelNoAds:'Volume de Leads / mês'},
+  funnel:['Leads','Agend.','Consultas','Contratos'],capacity:{baseKey:'entry',divisor:400},
+  rates:[
+   {sLabel:'Taxa Agendamento de Consultas',dLabel:'Consultas Agendadas',def:25,ideal:0.40,h:[30,45]},
+   {sLabel:'Taxa Comparecimento de Consultas',dLabel:'Consultas Realizadas',def:65,ideal:0.80,h:[70,85]},
+   {sLabel:'Taxa de Fechamento (Contratos)',dLabel:'Contratos Fechados',def:30,ideal:0.50,h:[35,50]}],
+  sliders:{inv:{label:'Investido em Anúncios',min:100,max:30000,step:100,def:2000},
+   cpc:{label:'Custo por Lead Captado',min:1,max:300,step:1,def:40},
+   ticket:{label:'Honorário Médio por Contrato',min:300,max:50000,step:100,def:4000},
+   volLeads:{label:'Volume de Leads / mês',min:10,max:3000,step:10,def:150}},
+  cpcStatus:null,
+  dash:[
+   {label:'Qtde Leads Captados',valueKey:'entry',fmt:'count'},
+   {label:'Consultas Agendadas',valueKey:'stage:1',fmt:'count',status:{src:'rate:0',fn:stRate(30,45)}},
+   {label:'Consultas Realizadas',valueKey:'stage:2',fmt:'count',status:{src:'rate:1',fn:stRate(70,85)}},
+   {label:'Contratos Fechados',valueKey:'stage:3',fmt:'count',status:{src:'rate:2',fn:stRate(35,50)}},
+   {label:'Custo por Consulta Realizada',valueKey:'cost:2',fmt:'money',adsOnly:true,hint:'investimento ÷ consultas'},
+   {label:'CAC · Custo por Contrato',valueKey:'cac',fmt:'money',adsOnly:true,hint:'investimento ÷ contratos',status:{src:'cac',fn:stPctTicket(0.10,0.30)}},
+   {label:'ROAS Projetado',valueKey:'roas',fmt:'roas',status:{src:'roas',fn:stRoas(3,8)}},
+   {label:'Atendentes Necessários',valueKey:'capacity',fmt:'int',hint:'1 atendente · 400 leads/mês'}]},
+ 'Restaurante / Delivery':{bench:benchGen(0.30),
+  entry:{tableLabel:'Cliques Captados / mês',tableLabelNoAds:'Volume de Cliques / mês'},
+  funnel:['Cliques','Visit.','Iniciados','Pedidos'],capacity:{baseKey:'final',divisor:1200},
+  rates:[
+   {sLabel:'Taxa de Visitantes no Cardápio (connect rate)',dLabel:'Visitantes no Cardápio',def:75,ideal:0.85,h:[70,85]},
+   {sLabel:'Taxa de Pedidos Iniciados',dLabel:'Pedidos Iniciados',def:20,ideal:0.30,h:[15,30]},
+   {sLabel:'Taxa de Conversão (Pedidos)',dLabel:'Pedidos Finalizados',def:60,ideal:0.80,h:[50,80]}],
+  sliders:{inv:{label:'Investido em Anúncios',min:100,max:20000,step:50,def:1500},
+   cpc:{label:'Custo por Clique (CPC Médio)',min:0.1,max:10,step:0.1,def:0.8,h:[0.40,1.50],hMoney:true},
+   ticket:{label:'Ticket Médio por Pedido',min:10,max:500,step:5,def:70},
+   volLeads:{label:'Volume de Cliques / mês',min:50,max:50000,step:50,def:3000}},
+  cpcStatus:stMoney(0.40,1.50),
+  dash:[
+   {label:'Cliques Captados',valueKey:'entry',fmt:'count'},
+   {label:'Visitantes no Cardápio',valueKey:'stage:1',fmt:'count',status:{src:'rate:0',fn:stRate(70,85)}},
+   {label:'Pedidos Iniciados',valueKey:'stage:2',fmt:'count',status:{src:'rate:1',fn:stRate(15,30)}},
+   {label:'Pedidos Finalizados',valueKey:'stage:3',fmt:'count',status:{src:'rate:2',fn:stRate(50,80)}},
+   {label:'CAC · Custo por Pedido',valueKey:'cac',fmt:'money',adsOnly:true,hint:'investimento ÷ pedidos',status:{src:'cac',fn:stPctTicket(0.15,0.35)}},
+   {label:'ROAS Projetado',valueKey:'roas',fmt:'roas',status:{src:'roas',fn:stRoas(3,6)}},
+   {label:'Atendentes Necessários',valueKey:'capacity',fmt:'int',hint:'1 atendente · 1.200 pedidos/mês'}]}
 };
 
 var _config=null;
